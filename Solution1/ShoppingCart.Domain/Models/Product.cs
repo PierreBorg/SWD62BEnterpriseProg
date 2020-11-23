@@ -24,8 +24,10 @@ namespace ShoppingCart.Domain.Models
         public string Description { get; set; }
 
         [Required]
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public string ImageUrl { get; set; }
+    
+        public int Stock { get; set; }
     }
 }
