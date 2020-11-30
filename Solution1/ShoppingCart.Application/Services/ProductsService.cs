@@ -32,6 +32,18 @@ namespace ShoppingCart.Application.Services
             _productsRepo.AddProduct(newProduct);
         }
 
+        public void DeleteProduct(Guid id)
+        {
+            var pToDelete = _productsRepo.GetProduct(id);
+            
+            if (pToDelete != null)
+            {
+                _productsRepo.DeleteProduct(pToDelete);
+            }
+            
+            
+        }
+
         public ProductViewModel GetProduct(Guid id)
         {
             var myProduct = _productsRepo.GetProduct(id);

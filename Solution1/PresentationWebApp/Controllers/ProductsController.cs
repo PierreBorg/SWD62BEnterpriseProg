@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Application.Interfaces;
 using ShoppingCart.Application.ViewModels;
@@ -12,11 +14,12 @@ namespace PresentationWebApp.Controllers
     {
         private readonly IProductsService _productsService;
         private readonly ICategoriesService _categoriesService;
-        public ProductsController(IProductsService productsService, ICategoriesService categoriesService)
+        private IWebHostEnvironment _env;
+        public ProductsController(IProductsService productsService, ICategoriesService categoriesService, IWebHostEnvironment env)
         {
             _productsService = productsService;
             _categoriesService = categoriesService;
-
+            _env = env;
         }
 
         public IActionResult Index()
@@ -46,18 +49,36 @@ namespace PresentationWebApp.Controllers
 
         //here details inputted by the user will be received
         [HttpPost]
-        public IActionResult Create(ProductViewModel data)
+        public IActionResult Create(ProductViewModel data, IFormFile f)
         {
             try
             {
+                if(f != null)
+                {
+                    if(f.Length > 0)
+                    {
+                        //the newFileName is going to be stored in the database
+                        string newFilename = Guid.NewGuid() + System.IO.Path.GetExtension(f.FileName);
+                        
+                        string newFilenameWithAbsolutePath = _env.WebRootPath + @"\Images\" + newFilename;
+                        
+                        using (var stream = System.IO.File.Create(newFilenameWithAbsolutePath))
+                        {
+                            f.CopyTo(stream);
+                        }
+
+                        data.ImageUrl = @"\Images\" + newFilename;
+                    }
+                }
+
                 _productsService.AddProduct(data);
 
-                ViewData["feedback"] = "Product was added successfully";
+                TempData["feedback"] = "Product was added successfully";
             }
             catch(Exception ex)
             {
                 //log error
-                ViewData["warning"] = "Product was not added!!";
+                TempData["warning"] = "Product was not added!!";
             }
 
             var listOfCategories = _categoriesService.GetCategories();
@@ -66,6 +87,22 @@ namespace PresentationWebApp.Controllers
 
             return View(data);
 
+        }
+
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _productsService.DeleteProduct(id);
+                TempData["feedback"] = "Product was deleted";
+            }
+            catch (Exception ex)
+            {
+                //log your error
+                TempData["warning"] = "Product was not deleted"; //change from ViewData to TempData
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
