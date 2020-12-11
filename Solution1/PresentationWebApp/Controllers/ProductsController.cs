@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace PresentationWebApp.Controllers
     
         //the engine will load a page with empty fields
         [HttpGet]
+        [Authorize (Roles ="Admin")] //is going to be accessed only by authenticated users
         public IActionResult Create()
         {
             //fetch a list of categories
@@ -49,6 +51,7 @@ namespace PresentationWebApp.Controllers
 
         //here details inputted by the user will be received
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(ProductViewModel data, IFormFile f)
         {
             try
@@ -89,6 +92,7 @@ namespace PresentationWebApp.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid id)
         {
             try

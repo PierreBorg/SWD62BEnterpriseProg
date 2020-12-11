@@ -16,7 +16,11 @@
                     <h5 class="card-title">@p.Name</h5>
                     <p class="card-text">@p.Price</p>
                     <a href="/Products/Details?id=@p.Id" class="btn btn-primary">View Specification</a>
-                    <a href="/Products/Delete?id=@p.Id" class="btn btn-danger">Delete</a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Products/Delete?id=@p.Id" class="btn btn-danger">Delete</a>
+                    }
                 </div>
             </div>
         </div>

@@ -34,8 +34,22 @@ namespace PresentationWebApp
                     Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            /* services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            */
+
+            /*
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                 .AddDefaultUI()
+                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                 .AddDefaultTokenProviders();
+            */
+            
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
