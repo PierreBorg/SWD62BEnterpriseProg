@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ShoppingCart.Application.Interfaces;
 using ShoppingCart.Application.ViewModels;
 using ShoppingCart.Domain.Interfaces;
@@ -17,13 +18,14 @@ namespace ShoppingCart.Application.Services
         
         public ProductsService(IProductsRepository productsRepository, IMapper mapper)
         {
+            _mapper = mapper;
             _productsRepo = productsRepository;
         }
 
         public void AddProduct(ProductViewModel product)
         {
-            //converting from productviewmodel to product
-            Product newProduct = new Product()
+            //converting from ProductViewModel to product
+/*            Product newProduct = new Product()
             {
                 Description = product.Description,
                 Name = product.Name,
@@ -33,6 +35,13 @@ namespace ShoppingCart.Application.Services
             };
 
             _productsRepo.AddProduct(newProduct);
+*/
+
+            var myProduct = _mapper.Map<Product>(product);
+            myProduct.Category = null;
+
+            _productsRepo.AddProduct(myProduct);
+      //      _productsRepo.AddProduct(_mapper.Map<Product>(product));
         }
 
         public void DeleteProduct(Guid id)
@@ -66,9 +75,8 @@ namespace ShoppingCart.Application.Services
         }
         public IQueryable<ProductViewModel> GetProducts()
         {
-            var products = _productsRepo.GetProducts();
-            var result = _mapper.Map<IQueryable<Product>, IQueryable<ProductViewModel>>(products);
-            return result;
+            var products = _productsRepo.GetProducts().ProjectTo<ProductViewModel>(_mapper.ConfigurationProvider);
+            return products;
             //Domain >> ViewModels
            
             /*
