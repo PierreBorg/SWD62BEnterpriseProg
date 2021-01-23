@@ -78,10 +78,11 @@ namespace PresentationWebApp.Controllers
 
                 TempData["feedback"] = "Product was added successfully";
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 //log error
-                TempData["warning"] = "Product was not added!! " + ex;
+                TempData["Error"] = "Product was not added!! ";
+                return RedirectToAction("Error", "Home");
             }
 
             var listOfCategories = _categoriesService.GetCategories();
@@ -102,7 +103,8 @@ namespace PresentationWebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["warning"] = "Product was not hidden " + ex;
+                TempData["Error"] = "Product was not hidden!! ";
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("Index");
         }
@@ -117,7 +119,8 @@ namespace PresentationWebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["warning"] = "Product was not unhidden " + ex;
+                TempData["Error"] = "Product was not hidden!! ";
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("Index");
         }
@@ -133,7 +136,8 @@ namespace PresentationWebApp.Controllers
             catch (Exception ex)
             {
                 //log your error
-                TempData["warning"] = "Product was not deleted " + ex; //change from ViewData to TempData
+                TempData["Error"] = "Product was not deleted!! ";
+                return RedirectToAction("Error", "Home");
             }
 
             return RedirectToAction("Index");

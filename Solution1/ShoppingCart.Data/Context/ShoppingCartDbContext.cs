@@ -19,7 +19,10 @@ namespace ShoppingCart.Data.Context
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+
+        public DbSet<Cart> Cart { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

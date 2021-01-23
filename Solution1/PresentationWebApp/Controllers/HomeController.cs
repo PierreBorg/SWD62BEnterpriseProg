@@ -23,13 +23,12 @@ namespace PresentationWebApp.Controllers
             try
             {
                 _logger.LogInformation("Started index method");
-                _logger.LogWarning("About to raise an exception!");
-
-                throw new Exception("Exception to test!");
             }
             catch (Exception ex)
             {
                 _logger.LogError("Message occured: " + ex.Message);
+                TempData["Error"] = "Something unexpected occured! Apologies";
+                return RedirectToAction("Error", "Home");
             }
             return View();
         }
