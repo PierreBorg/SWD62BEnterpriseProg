@@ -6,36 +6,45 @@
 <h1>Products Catalogue</h1>
 
 <div class="container">
-    <div class="row">
-        @foreach(var p in Model)
-        {
-        <div class="col-4">
-            @if (User.IsInRole("Admin") | p.Disable == false)
-            {
-            <div class="card" style="width: 18rem;">
-                <img src="@p.ImageUrl" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">@p.Name</h5>
-                    <p class="card-text">@p.Price</p>
-                    <a href="/Products/Details?id=@p.Id" class="btn btn-primary">View Specification</a>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a href="/Products/Delete?id=@p.Id" class="btn btn-danger">Delete</a>
-                        @if (p.Disable == false)
-                        {
-                            <a href="/Products/Hide?id=@p.Id" class="btn btn-warning">Hide</a>
-                        }
-                        else {
-                            <a href="/Products/Show?id=@p.Id" class="btn btn-success">Show</a>
-
-                        }
-
-                    }
-                </div>
-            </div>
-            }
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Search by Category: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+            </p>
         </div>
+    </form>
+    <div class="row">
+        @foreach (var p in Model)
+        {
+            <div class="col-4">
+                @if (User.IsInRole("Admin") | p.Disable == false)
+                {
+                    <div class="card" style="width: 18rem;">
+                        <img src="@p.ImageUrl" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@p.Name</h5>
+                            <p class="card-text">@p.Price</p>
+                            <a href="/Products/Details?id=@p.Id" class="btn btn-primary">View Specification</a>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="/Products/Delete?id=@p.Id" class="btn btn-danger">Delete</a>
+                                @if (p.Disable == false)
+                                {
+                                    <a href="/Products/Hide?id=@p.Id" class="btn btn-warning">Hide</a>
+                                }
+                                else
+                                {
+                                    <a href="/Products/Show?id=@p.Id" class="btn btn-success">Show</a>
+
+                                }
+
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
         }
     </div>
 </div>

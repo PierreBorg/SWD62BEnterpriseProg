@@ -101,7 +101,7 @@ namespace PresentationWebApp.Controllers
                 _productsService.HideProduct(id);
                 TempData["feedback"] = "Product was hidden";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = "Product was not hidden!! ";
                 return RedirectToAction("Error", "Home");
@@ -117,7 +117,7 @@ namespace PresentationWebApp.Controllers
                 _productsService.UnHideProduct(id);
                 TempData["feedback"] = "Product was unhidden";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = "Product was not hidden!! ";
                 return RedirectToAction("Error", "Home");
@@ -133,7 +133,7 @@ namespace PresentationWebApp.Controllers
                 _productsService.DeleteProduct(id);
                 TempData["feedback"] = "Product was deleted";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //log your error
                 TempData["Error"] = "Product was not deleted!! ";
