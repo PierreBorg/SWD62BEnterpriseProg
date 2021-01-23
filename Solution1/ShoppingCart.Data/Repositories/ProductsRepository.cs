@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿   using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Data.Context;
 using ShoppingCart.Domain.Interfaces;
 using ShoppingCart.Domain.Models;
@@ -31,10 +31,17 @@ namespace ShoppingCart.Data.Repositories
             _context.SaveChanges(); //this will save permanently into the database
         }
 
-        public void DisableProduct(Guid id)
+        public void HideProduct(Product product, Guid id)
         {
             var p = GetProduct(id);
             p.Disable = true;
+            _context.SaveChanges();
+        }
+
+        public void UnHideProduct(Product product, Guid id)
+        {
+            var p = GetProduct(id);
+            p.Disable = false;
             _context.SaveChanges();
         }
 

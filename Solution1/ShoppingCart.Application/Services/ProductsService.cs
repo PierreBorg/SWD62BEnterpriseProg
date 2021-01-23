@@ -15,7 +15,7 @@ namespace ShoppingCart.Application.Services
     {
         private IMapper _mapper;
         private IProductsRepository _productsRepo;
-        
+
         public ProductsService(IProductsRepository productsRepository, IMapper mapper)
         {
             _mapper = mapper;
@@ -25,35 +25,52 @@ namespace ShoppingCart.Application.Services
         public void AddProduct(ProductViewModel product)
         {
             //converting from ProductViewModel to product
-/*            Product newProduct = new Product()
-            {
-                Description = product.Description,
-                Name = product.Name,
-                Price = product.Price,
-                CategoryId = product.Category.Id,
-                ImageUrl = product.ImageUrl
-            };
+            /*            Product newProduct = new Product()
+                        {
+                            Description = product.Description,
+                            Name = product.Name,
+                            Price = product.Price,
+                            CategoryId = product.Category.Id,
+                            ImageUrl = product.ImageUrl
+                         };
 
-            _productsRepo.AddProduct(newProduct);
-*/
+                        _productsRepo.AddProduct(newProduct);
+            */
 
             var myProduct = _mapper.Map<Product>(product);
             myProduct.Category = null;
 
             _productsRepo.AddProduct(myProduct);
-      //      _productsRepo.AddProduct(_mapper.Map<Product>(product));
+            //      _productsRepo.AddProduct(_mapper.Map<Product>(product));
         }
 
         public void DeleteProduct(Guid id)
         {
             var pToDelete = _productsRepo.GetProduct(id);
-            
+
             if (pToDelete != null)
             {
                 _productsRepo.DeleteProduct(pToDelete);
             }
-            
-            
+        }
+
+        public void HideProduct(Guid id)
+        {
+            var pToHide = _productsRepo.GetProduct(id);
+
+            if (pToHide != null)
+            {
+                _productsRepo.HideProduct(pToHide, id);
+            }
+        }
+        public void UnHideProduct(Guid id)
+        {
+            var pToUnHide = _productsRepo.GetProduct(id);
+
+            if (pToUnHide != null)
+            {
+                _productsRepo.UnHideProduct(pToUnHide, id);
+            }
         }
 
         public ProductViewModel GetProduct(Guid id)

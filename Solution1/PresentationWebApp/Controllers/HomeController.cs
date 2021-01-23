@@ -20,6 +20,17 @@ namespace PresentationWebApp.Controllers
 
         public IActionResult Index()
         {
+            try
+            {
+                _logger.LogInformation("Started index method");
+                _logger.LogWarning("About to raise an exception!");
+
+                throw new Exception("Exception to test!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Message occured: " + ex.Message);
+            }
             return View();
         }
 

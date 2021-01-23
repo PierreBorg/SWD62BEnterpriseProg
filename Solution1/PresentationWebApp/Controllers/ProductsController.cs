@@ -81,7 +81,7 @@ namespace PresentationWebApp.Controllers
             catch(Exception ex)
             {
                 //log error
-                TempData["warning"] = "Product was not added!!";
+                TempData["warning"] = "Product was not added!! " + ex;
             }
 
             var listOfCategories = _categoriesService.GetCategories();
@@ -90,6 +90,36 @@ namespace PresentationWebApp.Controllers
 
             return View(data);
 
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public IActionResult Hide(Guid id)
+        {
+            try
+            {
+                _productsService.HideProduct(id);
+                TempData["feedback"] = "Product was hidden";
+            }
+            catch (Exception ex)
+            {
+                TempData["warning"] = "Product was not hidden " + ex;
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Show(Guid id)
+        {
+            try
+            {
+                _productsService.UnHideProduct(id);
+                TempData["feedback"] = "Product was unhidden";
+            }
+            catch (Exception ex)
+            {
+                TempData["warning"] = "Product was not unhidden " + ex;
+            }
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Admin")]
@@ -103,7 +133,7 @@ namespace PresentationWebApp.Controllers
             catch (Exception ex)
             {
                 //log your error
-                TempData["warning"] = "Product was not deleted"; //change from ViewData to TempData
+                TempData["warning"] = "Product was not deleted " + ex; //change from ViewData to TempData
             }
 
             return RedirectToAction("Index");

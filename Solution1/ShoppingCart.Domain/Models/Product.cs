@@ -33,5 +33,7 @@ namespace ShoppingCart.Domain.Models
         public int Stock { get; set; }
 
         public bool Disable { get; set; }
+    /*
+        public int Pages { get; set; }*/
     }
 }

@@ -10,6 +10,8 @@
         @foreach(var p in Model)
         {
         <div class="col-4">
+            @if (User.IsInRole("Admin") | p.Disable == false)
+            {
             <div class="card" style="width: 18rem;">
                 <img src="@p.ImageUrl" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -20,9 +22,19 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <a href="/Products/Delete?id=@p.Id" class="btn btn-danger">Delete</a>
+                        @if (p.Disable == false)
+                        {
+                            <a href="/Products/Hide?id=@p.Id" class="btn btn-warning">Hide</a>
+                        }
+                        else {
+                            <a href="/Products/Show?id=@p.Id" class="btn btn-success">Show</a>
+
+                        }
+
                     }
                 </div>
             </div>
+            }
         </div>
         }
     </div>
